@@ -1,30 +1,38 @@
-import {
-  CameraView,
-  CameraType,
-  useCameraPermissions,
-  takePictureAsync,
-} from "expo-camera";
+import { CameraView, CameraType, useCameraPermissions } from "expo-camera";
 import * as MediaLibrary from "expo-media-library";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Button, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export default function App() {
   const [facing, setFacing] = useState<CameraType>("back");
-  const [permission, requestPermission] = useCameraPermissions();
+  const [camPermission, requestCamPermission] = useCameraPermissions();
+  const [camPermissionState, setCamPermissionState] = useState(null);
   const cameraRef = useRef(null);
-  if (!permission) {
+
+  useEffect(() => {
+    (async () => {
+      const camStatus = await requestCamPermission();
+      console.log(">>>>>", camStatus);
+      console.log(">>???", JSON.stringify(camStatus.granted));
+      console.log(">> bool", JSON.stringify(camStatus.granted === true));
+      console.log(">>", setCamPermissionState(camStatus.granted === true));
+      setCamPermissionState(camStatus.granted === true);
+    })();
+  }, []);
+
+  if (!camPermission) {
     // Camera permissions are still loading.
     return <View />;
   }
 
-  if (!permission.granted) {
+  if (!camPermission.granted) {
     // Camera permissions are not granted yet.
     return (
       <View style={styles.container}>
         <Text style={styles.message}>
           We need your permission to show the camera
         </Text>
-        <Button onPress={requestPermission} title="grant permission" />
+        <Button onPress={requestCamPermission} title="grant permission" />
       </View>
     );
   }
@@ -35,10 +43,12 @@ export default function App() {
 
   async function takePicture() {
     console.log("here?", cameraRef.current);
-    const photo = await cameraRef.current.takePictureAsync((picture) =>
-      console.log(">>>", picture)
-    );
-    console.log("👌", photo);
+
+    if (cameraRef.current) {
+      const photo = await cameraRef.current.takePictureAsync();
+      await MediaLibrary.saveToLibraryAsync(photo.uri);
+      console.log("Saved to media library", photo.uri);
+    }
   }
 
   return (
