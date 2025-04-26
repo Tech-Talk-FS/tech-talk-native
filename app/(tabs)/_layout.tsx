@@ -4,7 +4,7 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 
 export default function TodosLayout() {
   return (
-    <Tabs>
+    <Tabs screenOptions={{ tabBarActiveTintColor: '#d19efa'}}>
       <Tabs.Screen
         name="index"
         options={{ title: "Home", headerShown: false,
