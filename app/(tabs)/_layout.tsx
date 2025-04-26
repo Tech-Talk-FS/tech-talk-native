@@ -38,6 +38,16 @@ export default function TodosLayout() {
         ),
       }}
       />
+            
+<Tabs.Screen
+  name="AI"
+  options={{
+    title: "AI",
+    tabBarIcon: ({ color, size }) => (
+      <Feather name="image" size={size} color={color} />
+    ),
+  }}
+/>
     </Tabs>
   );
 }
