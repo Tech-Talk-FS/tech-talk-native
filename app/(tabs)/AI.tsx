@@ -1,89 +1,83 @@
 import { useState } from "react";
-import { Text, View, Button, Image, ActivityIndicator, ScrollView } from "react-native";
-
-// ✅ Use your real working project key
-const OPENAI_API_KEY = "YOUR_OPENAI_API_KEY";
-// ✅ Use your real working project key
+import { ScrollView, SafeAreaView } from "react-native";
+import { Text, Card, Button, Image } from "@rneui/themed";
 
 const AI = () => {
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const [status, setStatus] = useState("Tap to generate an image.");
+  const [status, setStatus] = useState("Tap Generate to create Studio Ghibli magic!");
 
   const generateImage = async () => {
     setLoading(true);
-    setStatus("Generating Studio Ghibli magic...");
+    setStatus("Generating...");
 
     try {
-      const res = await fetch("https://api.openai.com/v1/images/generations", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${OPENAI_API_KEY}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          model: "dall-e-3",
-          prompt: "Studio Ghibli-style fantasy scene, lush forest, vivid colors, soft sunlight",
-          n: 1,
-          size: "1024x1024",
-          response_format: "url",
-        }),
-      });
+      // Fake response or comment this out if you don't have the API connection active
+      await new Promise(resolve => setTimeout(resolve, 2000)); // Simulate network wait
 
-      if (!res.ok) {
-        const errJson = await res.json();
-        console.error("OpenAI Error:", errJson);
-        setStatus(`OpenAI error: ${errJson.error?.message || "Unknown"}`);
-        return;
-      }
+      // Example fake image for demo (you can replace this with real fetch later)
+      const generatedUrl = "https://i.imgur.com/R2U8a0F.jpeg";
 
-      const data = await res.json();
-      const image = data?.data?.[0]?.url;
-
-      if (image) {
-        setImageUrl(image);
-        setStatus("Image generated!");
-      } else {
-        setStatus("No image returned.");
-      }
+      setImageUrl(generatedUrl);
+      setStatus("✨ Magic created!");
     } catch (err) {
       console.error("Network error:", err);
-      setStatus("⚠️ Network error — are you online? Try real device.");
+      setStatus("⚠️ Network error — check connection.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <ScrollView
-      contentContainerStyle={{
-        flexGrow: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        padding: 20,
-        backgroundColor: "#fff",
-      }}
-    >
-      <Text style={{ fontSize: 24, fontWeight: "bold", marginBottom: 16 }}>Ghibli Image Generator</Text>
-      <Text style={{ fontSize: 16, marginBottom: 16, color: "#666" }}>{status}</Text>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#f5f7fa" }}>
+      <ScrollView
+        contentContainerStyle={{
+          flexGrow: 1,
+          justifyContent: "center",
+          alignItems: "center",
+          padding: 20,
+        }}
+        keyboardShouldPersistTaps="handled"
+      >
+        <Card containerStyle={{ width: "100%", borderRadius: 12 }}>
+          <Card.Title style={{ fontSize: 26, color: "#5c67f2" }}>
+            Studio Ghibli AI
+          </Card.Title>
+          <Card.Divider />
+          <Text style={{ marginBottom: 10, textAlign: "center", color: "#777" }}>
+            {status}
+          </Text>
 
-      <Button title="Generate Ghibli Image" onPress={generateImage} />
+          {imageUrl && (
+            <Image
+              source={{ uri: imageUrl }}
+              containerStyle={{
+                width: "100%",
+                height: 300,
+                borderRadius: 12,
+                marginBottom: 20,
+              }}
+              PlaceholderContent={<Text>Loading image...</Text>}
+              resizeMode="cover"
+            />
+          )}
 
-      {loading && <ActivityIndicator size="large" style={{ marginTop: 24 }} />}
-
-      {imageUrl && (
-        <Image
-          source={{ uri: imageUrl }}
-          style={{
-            width: 300,
-            height: 300,
-            borderRadius: 16,
-            marginTop: 24,
-          }}
-          resizeMode="cover"
-        />
-      )}
-    </ScrollView>
+          <Button
+            title="Generate Image"
+            loading={loading}
+            onPress={generateImage}
+            buttonStyle={{
+              backgroundColor: "#5c67f2",
+              borderRadius: 8,
+            }}
+            titleStyle={{
+              fontWeight: "600",
+              fontSize: 18,
+            }}
+          />
+        </Card>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 

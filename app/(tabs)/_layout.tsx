@@ -46,6 +46,7 @@ export default function TodosLayout() {
     tabBarIcon: ({ color, size }) => (
       <Feather name="image" size={size} color={color} />
     ),
+    headerShown: false, // ✅ Always match the others
   }}
 />
     </Tabs>
