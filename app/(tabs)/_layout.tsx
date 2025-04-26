@@ -35,13 +35,13 @@ export default function TodosLayout() {
         }}
       />
       <Tabs.Screen
-        name="profile"
+        name="cam"
         options={{
-          title: "Profile",
+          title: "Camera",
           headerShown: false,
           tabBarIcon: ({ focused, color, size }) => (
             <AntDesign
-              name={focused ? "user" : "user"}
+              name={focused ? "camera" : "camera"}
               size={size}
               color={color}
             />
