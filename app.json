@@ -8,9 +8,12 @@
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
-    "ios": {
-      "supportsTablet": true
-    },
+"ios": {
+  "supportsTablet": true,
+  "infoPlist": {
+    "NSLocationWhenInUseUsageDescription": "This app requires access to your location to display the map."
+  }
+},
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
