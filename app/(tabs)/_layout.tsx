@@ -31,7 +31,7 @@ export default function TodosLayout() {
       }}
       />
        <Tabs.Screen
-        name="map"
+        name="mapbox"
         options={{ title: "Map", headerShown: false,
            tabBarIcon: ({ focused, color, size }) => (
           <Feather name={focused ? 'map' : 'map'} size={size} color={color} />
