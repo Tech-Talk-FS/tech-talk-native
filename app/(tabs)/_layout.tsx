@@ -1,6 +1,7 @@
 import { Tabs } from "expo-router";
 import AntDesign from '@expo/vector-icons/AntDesign';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+import Feather from '@expo/vector-icons/Feather';
 
 export default function TodosLayout() {
   return (
@@ -26,6 +27,14 @@ export default function TodosLayout() {
         options={{ title: "Profile", headerShown: false,
            tabBarIcon: ({ focused, color, size }) => (
           <AntDesign name={focused ? 'user' : 'user'} size={size} color={color} />
+        ),
+      }}
+      />
+       <Tabs.Screen
+        name="map"
+        options={{ title: "Map", headerShown: false,
+           tabBarIcon: ({ focused, color, size }) => (
+          <Feather name={focused ? 'map' : 'map'} size={size} color={color} />
         ),
       }}
       />
